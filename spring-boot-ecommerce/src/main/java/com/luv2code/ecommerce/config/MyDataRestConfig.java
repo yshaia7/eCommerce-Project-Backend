@@ -1,7 +1,14 @@
 package com.luv2code.ecommerce.config;
 
+<<<<<<< HEAD
 import com.luv2code.ecommerce.entity.Product;
 import com.luv2code.ecommerce.entity.ProductCategory;
+=======
+import com.luv2code.ecommerce.entity.Country;
+import com.luv2code.ecommerce.entity.Product;
+import com.luv2code.ecommerce.entity.ProductCategory;
+import com.luv2code.ecommerce.entity.State;
+>>>>>>> c678729 (JpaRepository: add Country and State Http Get request support)
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -30,6 +37,7 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
 
         HttpMethod[] theUnsupportedActions = {HttpMethod.PUT, HttpMethod.POST, HttpMethod.DELETE};
 
+<<<<<<< HEAD
         //disable HTTP methods for Product: PUT, POST, DELETE
         config.getExposureConfiguration()
                 .forDomainType(Product.class)
@@ -41,11 +49,29 @@ public class MyDataRestConfig implements RepositoryRestConfigurer {
                 .forDomainType(ProductCategory.class)
                 .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions)))
                 .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
+=======
+        //disable HTTP methods for Product & ProductCategory: PUT, POST, DELETE
+        disableHttpMethods(Product.class, config, theUnsupportedActions);
+        disableHttpMethods(ProductCategory.class, config, theUnsupportedActions);
+        disableHttpMethods(Country.class, config, theUnsupportedActions);
+        disableHttpMethods(State.class, config, theUnsupportedActions);
+>>>>>>> c678729 (JpaRepository: add Country and State Http Get request support)
 
         // call an internal helper method
         exposeIds(config);
     }
 
+<<<<<<< HEAD
+=======
+    private void disableHttpMethods(Class theClass, RepositoryRestConfiguration config, HttpMethod[] theUnsupportedActions) {
+        config.getExposureConfiguration()
+                .forDomainType(theClass)
+                .withItemExposure(((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions)))
+                .withCollectionExposure((metdata, httpMethods) -> httpMethods.disable(theUnsupportedActions));
+    }
+
+
+>>>>>>> c678729 (JpaRepository: add Country and State Http Get request support)
     private void exposeIds(RepositoryRestConfiguration config) {
         // expose entity ids
         //
