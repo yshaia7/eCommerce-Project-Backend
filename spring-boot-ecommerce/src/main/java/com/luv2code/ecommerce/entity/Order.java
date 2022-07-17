@@ -60,10 +60,11 @@ public class Order {
 
     public void add(OrderItem item){
         if(item != null){
-            if (orderItems == null){
-                orderItems.add(item);
-                item.setOrder(this);
+            if (this.orderItems == null){
+                this.orderItems = new HashSet<>();
             }
+            this.orderItems.add(item);
+            item.setOrder(this);
         }
     }
 
