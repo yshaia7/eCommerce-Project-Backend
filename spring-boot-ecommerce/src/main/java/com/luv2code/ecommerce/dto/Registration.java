@@ -4,7 +4,6 @@ import com.luv2code.ecommerce.entity.Register;
 import lombok.Data;
 
 @Data
-public class RegisterResponse {
-    private final Register register;
-    private String msg = "";
+public class Registration {
+    private Register register;
 }

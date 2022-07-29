@@ -2,6 +2,7 @@ package com.luv2code.ecommerce.service;
 
 import com.luv2code.ecommerce.dao.RegisterRepository;
 import com.luv2code.ecommerce.dto.RegisterResponse;
+import com.luv2code.ecommerce.dto.Registration;
 import com.luv2code.ecommerce.entity.Register;
 import org.springframework.stereotype.Service;
 
@@ -17,27 +18,53 @@ public class RegisterServiceImpl implements RegisterService {
     }
     @Override
     @Transactional
-    public RegisterResponse addNewRegister(Register register) {
+    public RegisterResponse addNewRegister(Registration registration) {
 
-        Register newRegister = new Register();
-        System.out.println("===============================");
-        System.out.println("===============================");
-        System.out.println("register.getId() " + register.getId());
-        System.out.println("register.getEmail() " + register.getEmail());
-        System.out.println("register.getPassword() " + register.getPassword());
-        System.out.println("register.getDateCreated() " + register.getDateCreated());
-        System.out.println("===============================");
-        System.out.println("===============================");
-        newRegister.setId(register.getId());
-        newRegister.setEmail(register.getEmail());
-        newRegister.setPassword(register.getPassword());
-        newRegister.setDateCreated(register.getDateCreated());
+        Register newRegister = registration.getRegister();
+        RegisterResponse registerResponse = new RegisterResponse(newRegister);
 
-        // save to the database
-//        registerRepository.save(newRegister);
+        // check if this is an existing register
+        String theEmail = newRegister.getEmail();
+        Register registerFromDB = registerRepository.findByEmail(theEmail);
 
-        // return a response
-        return new RegisterResponse(newRegister);
+        // don't save the email if exist
+        if(registerFromDB != null) {
+            registerResponse.setMsg("Please Choose different email");
+            return registerResponse;
+        }
+
+        // email doesn't exist yes, store hem in the db
+        registerRepository.save(newRegister);
+
+        return registerResponse;
     }
+
+//    @Override
+//    public RegisterResponse isUserExist(Registration registration) {
+//
+//        Register newRegister = registration.getRegister();
+//
+//        boolean passwordMatched = false;
+//
+//        // check if this is an existing register
+//        String theEmail = newRegister.getEmail();
+//        Register registerFromDB = registerRepository.findByEmail(theEmail);
+//
+//        RegisterResponse registerResponse = new RegisterResponse(registerFromDB);
+//
+//        // if exist in DB check if password matches
+//        if(registerFromDB != null) {
+//            passwordMatched = newRegister.getPassword().equals(registerFromDB.getPassword());
+//        }
+//        else{
+//            registerResponse.setMsg("The email doesn't exist");
+//        }
+//        if(registerFromDB != null && !passwordMatched)
+//            registerResponse.setMsg("Wrong password");
+//
+//        return registerResponse;
+//    }
+
+
 
 }
